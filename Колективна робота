@@ -1,0 +1,121 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Account {
+    string username;
+    string email;
+    // Additional account information
+};
+
+struct Order {
+    string orderId;
+    string apartmentId;
+    // Additional order details
+};
+
+struct Apartment {
+    string apartmentId;
+    string location;
+    // Additional apartment details
+};
+
+class RentalService {
+private:
+    Account currentAccount;
+    vector<Order> orderHistory;
+    vector<Order> currentOrders;
+    vector<Apartment> apartments;
+
+public:
+    void createAccount(string username, string email) {
+        currentAccount.username = username;
+        currentAccount.email = email;
+        // Additional account creation logic
+    }
+
+    void displayAccountInfo() {
+        cout << "Account Information:" << endl;
+        cout << "Username: " << currentAccount.username << endl;
+        cout << "Email: " << currentAccount.email << endl;
+        // Display additional account information
+    }
+
+    void displayOrderHistory() {
+        cout << "Order History:" << endl;
+        for (const auto& order : orderHistory) {
+            cout << "Order ID: " << order.orderId << ", Apartment ID: " << order.apartmentId << endl;
+            // Display additional order details
+        }
+    }
+
+    void displayCurrentOrders() {
+        cout << "Current Orders:" << endl;
+        for (const auto& order : currentOrders) {
+            cout << "Order ID: " << order.orderId << ", Apartment ID: " << order.apartmentId << endl;
+            // Display additional order details
+        }
+    }
+
+    void displayApartments() {
+        cout << "Available Apartments:" << endl;
+        for (const auto& apartment : apartments) {
+            cout << "Apartment ID: " << apartment.apartmentId << ", Location: " << apartment.location << endl;
+            // Display additional apartment details
+        }
+    }
+
+    void placeOrder(string apartmentId) {
+        Order order;
+        order.orderId = generateOrderId();
+        order.apartmentId = apartmentId;
+        currentOrders.push_back(order);
+    }
+
+    void completeOrder(string orderId) {
+        for (auto it = currentOrders.begin(); it != currentOrders.end(); ++it) {
+            if (it->orderId == orderId) {
+                orderHistory.push_back(*it);
+                currentOrders.erase(it);
+                break;
+            }
+        }
+    }
+
+    void addApartment(string apartmentId, string location) {
+        Apartment apartment;
+        apartment.apartmentId = apartmentId;
+        apartment.location = location;
+        apartments.push_back(apartment);
+    }
+
+private:
+    string generateOrderId() {
+        // Generate a unique order ID
+        // Additional logic can be implemented here
+        return "ORD-12345";
+    }
+};
+
+int main() {
+    RentalService rentalService;
+
+    // Simulating account creation
+    rentalService.createAccount("JohnDoe", "johndoe@example.com");
+
+    // Simulating adding apartments
+    rentalService.addApartment("APT-001", "New York City");
+    rentalService.addApartment("APT-002", "Los Angeles");
+
+    // Simulating placing an order
+    rentalService.placeOrder("APT-001");
+
+    // Displaying account information, order history, current orders, and available apartments
+    rentalService.displayAccountInfo();
+    rentalService.displayOrderHistory();
+    rentalService.displayCurrentOrders();
+    rentalService.displayApartments();
+
+    return 0;
+}
